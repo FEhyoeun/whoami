@@ -17,12 +17,17 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  font-family: "Jua", sans-serif;
+  color: #180B3D;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 0px;
+  padding: 0px;
+  line-height: 200%;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(100deg, #FBFFE2, #FFEBCC);
 }
 </style>
