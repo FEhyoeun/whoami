@@ -30,4 +30,11 @@ body {
   height: 100vh;
   background: linear-gradient(100deg, #FBFFE2, #FFEBCC);
 }
+
+ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
 </style>
