@@ -24,6 +24,7 @@ export default {
   margin: 0px;
   padding: 0px;
   line-height: 200%;
+  word-break: keep-all;
 }
 
 body {

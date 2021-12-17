@@ -6,20 +6,16 @@
           <div class="modal-header">
             <slot name="header">default header</slot>
           </div>
-
           <div class="modal-body">
             <slot name="body">default body</slot>
           </div>
-
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button class="modal-default-button" @click="$emit('close')">
                 CLOSE
               </button>
             </slot>
           </div>
-
         </div>
       </div>
     </div>
@@ -51,7 +47,8 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 40vw;
+  height: 20vh;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -61,6 +58,20 @@ export default {
   font-family: Helvetica, Arial, sans-serif;
 }
 
+@media (min-width: 750px) {
+  .modal-container {
+    width: 200px;
+    height: 20vh;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+}
+
 .modal-header h3 {
   margin-top : 0px;
   color: #42b983;
@@ -68,10 +79,45 @@ export default {
 
 .modal-body {
   margin: 20px 0px;
+  word-wrap: break-word;
 }
 
 .modal-default-button {
-  float: right;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  background: lightgray;
+  color: white;
+  margin: 0px;
+  padding: 10px;
+}
+
+@media (max-width: 240px) {
+  .modal-body {
+    margin: 0px;
+  }
+  .modal-default-button {
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    background: lightgray;
+    color: white;
+    margin: 0px;
+    width: 50px;
+    height: 30px;
+    padding: 0px;
+  }
+}
+
+.modal-default-button:hover {
+  transition: all ease-in 0.1s 0s;
+  background: gray;
+  cursor: pointer;
+}
+
+.modal-default-button:active {
+  position: relative;
+  top: 2px;
 }
 
 .modal-enter {

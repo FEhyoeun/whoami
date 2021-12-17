@@ -3,34 +3,34 @@
     <div class="contents">
       <div>
         <h1>당신의 영어 이름을 입력해주세요.</h1>
-        <input class="nameInput" v-model="user.name" @keypress.enter="getInfo()"/><br />
-        <button class="resultBtn" @click="getInfo()">결과 확인!</button>
+        <input class="name-input" v-model="user.name" @keypress.enter="getInfo()"/><br />
+        <button class="result-btn" @click="getInfo()">결과 확인 🎉</button>
       </div>
-      <div class="result-content" v-show="isShow">
+      <div class="result-content" v-show="isShowResult">
+        <video preload="auto" autoplay loop class="emoji">
+          <source src="https://c.tenor.com/esUU6Ui7208AAAPo/emoji-spin.mp4" type="video/mp4">
+          <source src="https://c.tenor.com/esUU6Ui7208AAAPs/emoji-spin.webm" type="video/webm">
+        </video>
         <ul>
           <li>{{ `${showName}님의 나이는 아마도... ${user.age}살이군요?` }}</li>
           <li>{{ `${showName}님의 성별은 아마도... ${user.gender === 'female' ? '여자' : '남자'}군요?` }}</li>
         </ul>
-        <div>
-          <h4>결과 공유하기</h4>
-          <ul class="shareSNS">
-            <li>카카오</li>
-            <li>트위터</li>
-            <li>URL</li>
-          </ul>
+        <div class="test-share-content">
+          <h4>테스트 공유하기</h4>
+          <div class="share-sns">
+            <button @click="sendKakaoLink()">카카오</button>
+            <button @click="sendTwitterLink()">트위터</button>
+            <button @click="copyURL()">URL</button>
+          </div>
         </div>
       </div>
     </div>
-
-    <input type="button" @click="sendLinkCustom()" value="Custom"/>
-
-    <Alert v-if="showModal" @close="showModal = false">
+    <Alert v-if="isShowModal" @close="isShowModal = false">
       <h3 slot="header">
         알림!
-      <i class="fas fa-times closeModalBtn" @click="showModal = false"></i>
+        <i class="fas fa-times close-modal-btn" @click="isShowModal = false"></i>
       </h3>
-      <div slot="body">할 일을 입력하세요.</div>
-<!--      <div slot="footer">테스트?</div>-->
+      <div slot="body">{{ msg }}</div>
     </Alert>
   </div>
 </template>
@@ -39,7 +39,7 @@
 import Alert from "./Alert";
 export default {
   name: "Index",
-  components: {Alert},
+  components: { Alert },
   data() {
     return {
       user: {
@@ -47,34 +47,39 @@ export default {
         age: 0,
         gender: '',
       },
-      isShow : false,
+      isShowResult : false,
+      isShowModal : false,
       showName : '',
-      showModal : false,
+      msg: '',
+      currentUrl: '',
     }
   },
   created() {
-
+    this.currentUrl = window.document.location.href; // TODO: 배포하기
   },
   methods: {
     getInfo() {
       if(this.user.name === '') {
-        this.showModal = !this.showModal;
-        //alert('이름을 입력해주세요!')
+        this.isShowModal = !this.isShowModal;
+        this.isShowResult = false;
+        this.msg = '이름을 입력해주세요!';
       } else if(this.$checkKorean(this.user.name)) {
-        alert('이름은 영어로 입력해주세요!')
+        this.isShowModal = !this.isShowModal;
+        this.isShowResult = false;
+        this.msg = '이름은 영어로 입력해주세요!';
         return
       }
 
       this.showName = this.user.name
       this.$GET(`https://api.agify.io/?name=${this.user.name}`, (result) => {
-        this.user.age = result.age
-        this.isShow = true
+        this.user.age = result.age;
+        this.isShowResult = true;
       }, () => {
         console.error(`나이 요청 실패!`);
       })
       this.$GET(`https://api.genderize.io/?name=${this.user.name}`, (result) => {
-        this.user.gender = result.gender
-        this.isShow = true
+        this.user.gender = result.gender;
+        this.isShowResult = true;
       }, () => {
         console.error(`성별 요청 실패!`);
       })
@@ -82,28 +87,36 @@ export default {
       this.clearName()
     },
     clearName() {
-      this.user.name = ''
+      this.user.name = '';
     },
-
-    sendLinkCustom() {
+    sendKakaoLink() {
       window.Kakao.init(process.env.VUE_APP_KAKAO_LINK)
       window.Kakao.Link.sendDefault({
-            objectType: 'text',
-            text:
-                '기본 템플릿으로 제공되는 텍스트 템플릿은 텍스트를 최대 200자까지 표시할 수 있습니다. 텍스트 템플릿은 텍스트 영역과 하나의 기본 버튼을 가집니다. 임의의 버튼을 설정할 수도 있습니다. 여러 장의 이미지, 프로필 정보 등 보다 확장된 형태의 카카오링크는 다른 템플릿을 이용해 보낼 수 있습니다.',
-            link: {
-              mobileWebUrl:
-                  'https://developers.kakao.com',
-              webUrl:
-                  'https://developers.kakao.com'
-            }
-          }
-      )
-    }
-  },
-  watch: {
+        objectType: 'text',
+        text: '당신의 영어 이름을 입력하시면, 성별과 나이를 추측해드립니다!',
+        link: {
+          mobileWebUrl: this.currentUrl,
+          webUrl: this.currentUrl,
+        }
+      })
+    },
+    sendTwitterLink() {
+      const sendText = "Who am I 👀? 영어 이름을 입력하고 내 나이와 성별을 알아보자!";
+      const sendUrl = this.currentUrl;
+      window.open(`https://twitter.com/intent/tweet?text=${sendText}&url=${sendUrl}`);
+    },
+    copyURL() {
+      let t = document.createElement("textarea");
+      document.body.appendChild(t);
+      t.value = this.currentUrl;
+      t.select();
+      document.execCommand('copy');
+      document.body.removeChild(t);
 
-  }
+      this.isShowModal = !this.isShowModal;
+      this.msg = 'URL이 복사되었습니다!';
+    },
+  },
 }
 </script>
 
@@ -120,25 +133,53 @@ export default {
   background: white;
   border-radius: 15px;
   padding: 30px;
+  width: 50vw;
   height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.contents h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emoji {
+  width: 200px;
+  height: 200px;
+}
+
+@media (max-width: 480px) {
+  .emoji {
+    display: none;
+  }
 }
 
 .result-content {
   justify-content: center;
   align-items: center;
   align-content: center;
-
 }
 
-.nameInput {
+.test-share-content {
+  margin-top: 20px;
+}
+
+.name-input {
   border-radius: 15px;
   font-size: 20px;
+  width: 70%;
 }
 
-.resultBtn {
+.result-btn {
   border: none;
   border-radius: 5px;
-  width: 200px;
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   height: 50px;
   background: #F2F7FF;
   font-size: 20px;
@@ -146,18 +187,30 @@ export default {
   cursor: pointer;
 }
 
-.shareSNS {
+.share-sns {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.shareSNS > li {
-  margin-right: 10px;
+.share-sns > button:not(:last-child) {
+  margin-right: 10%;
 }
 
-.shareSNS > li:hover {
+.share-sns > button {
+  border: none;
+  background: none;
+  font-size: 16px;
+}
+
+.share-sns > button:hover {
   font-weight: 600;
   cursor: pointer;
 }
+
+.share-sns > button:active {
+  position: relative;
+  top: 2px;
+}
+
 </style>
