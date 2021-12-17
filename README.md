@@ -10,6 +10,10 @@
 
 2021.12.14~2021.12.18
 
+## **배포 주소**
+
+https://hellowhoami.netlify.app/#/
+
 ## **사용툴**
 
 Vue.js
