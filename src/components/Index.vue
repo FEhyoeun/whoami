@@ -7,10 +7,15 @@
         <button class="result-btn" @click="getInfo()">결과 확인 🎉</button>
       </div>
       <div class="result-content" v-show="isShowResult">
-        <video preload="auto" autoplay loop class="emoji">
-          <source src="https://c.tenor.com/esUU6Ui7208AAAPo/emoji-spin.mp4" type="video/mp4">
-          <source src="https://c.tenor.com/esUU6Ui7208AAAPs/emoji-spin.webm" type="video/webm">
-        </video>
+        <div class="tenor-gif-embed" data-postid="17399212" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+          <a href="https://tenor.com/view/emoji-spin-hmm-thinking-thinking-emoji-gif-17399212">Emoji Spin Sticker</a>from
+          <a href="https://tenor.com/search/emoji-stickers">Emoji Stickers</a>
+        </div>
+<!--        -->
+<!--        <video preload="auto" autoplay loop class="emoji">-->
+<!--          <source src="https://c.tenor.com/esUU6Ui7208AAAPo/emoji-spin.mp4" type="video/mp4">-->
+<!--          <source src="https://c.tenor.com/esUU6Ui7208AAAPs/emoji-spin.webm" type="video/webm">-->
+<!--        </video>-->
         <ul>
           <li>{{ `${showName}님의 나이는 아마도... ${user.age}살이군요?` }}</li>
           <li>{{ `${showName}님의 성별은 아마도... ${user.gender === 'female' ? '여자' : '남자'}군요?` }}</li>
@@ -146,13 +151,14 @@ export default {
   white-space: nowrap;
 }
 
-.emoji {
+.tenor-gif-embed {
   width: 200px;
   height: 200px;
+  /*animation: rotate 5s infinite;*/
 }
 
 @media (max-width: 480px) {
-  .emoji {
+  .tenor-gif-embed {
     display: none;
   }
 }

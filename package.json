@@ -9,7 +9,7 @@
     "deploy": "gh-pages -d build",
     "lint": "vue-cli-service lint"
   },
-  "homepage": "https://FEhyoeun.github.io/whoami/index.html",
+  "homepage": "https://fehyoeun.github.io/whoami/",
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
