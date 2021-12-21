@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="contents">
       <div>
-        <h1>당신의 영어 이름을 입력해주세요.</h1>
+        <strong>당신의 영어 이름을 입력해주세요.</strong>
         <input class="name-input" v-model="user.name" @keypress.enter="getInfo()"/><br />
         <button class="result-btn" @click="getInfo()">결과 확인 🎉</button>
       </div>
@@ -11,11 +11,6 @@
           <a href="https://tenor.com/view/emoji-spin-hmm-thinking-thinking-emoji-gif-17399212">Emoji Spin Sticker</a>from
           <a href="https://tenor.com/search/emoji-stickers">Emoji Stickers</a>
         </div>
-<!--        -->
-<!--        <video preload="auto" autoplay loop class="emoji">-->
-<!--          <source src="https://c.tenor.com/esUU6Ui7208AAAPo/emoji-spin.mp4" type="video/mp4">-->
-<!--          <source src="https://c.tenor.com/esUU6Ui7208AAAPs/emoji-spin.webm" type="video/webm">-->
-<!--        </video>-->
         <ul>
           <li>{{ `${showName}님의 나이는 아마도... ${user.age}살이군요?` }}</li>
           <li>{{ `${showName}님의 성별은 아마도... ${user.gender === 'female' ? '여자' : '남자'}군요?` }}</li>
@@ -60,7 +55,7 @@ export default {
     }
   },
   created() {
-    this.currentUrl = window.document.location.href; // TODO: 배포하기
+    this.currentUrl = window.document.location.href;
   },
   methods: {
     getInfo() {
@@ -145,16 +140,19 @@ export default {
   justify-content: space-evenly;
 }
 
-.contents h1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+@media (min-width: 290px) {
+  .contents strong {
+    font-size: 25px;
+  }
 }
 
 .tenor-gif-embed {
   width: 200px;
   height: 200px;
-  /*animation: rotate 5s infinite;*/
+}
+
+.tenor-gif-embed > div {
+  padding-top: 0px;
 }
 
 @media (max-width: 480px) {
@@ -191,6 +189,12 @@ export default {
   font-size: 20px;
   margin: 15px 0px 15px 0;
   cursor: pointer;
+}
+
+@media (max-width: 290px) {
+  .result-btn {
+    font-size: 15px;
+  }
 }
 
 .share-sns {
