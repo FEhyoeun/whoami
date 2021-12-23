@@ -7,7 +7,7 @@
         <button class="result-btn" @click="getInfo()">결과 확인 🎉</button>
       </div>
       <div class="result-content" v-show="isShowResult">
-        <div class="tenor-gif-embed" data-postid="17399212" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+        <div class="tenor-gif-embed" data-postid="17399212" data-share-method="host" data-aspect-ratio="1">
           <a href="https://tenor.com/view/emoji-spin-hmm-thinking-thinking-emoji-gif-17399212">Emoji Spin Sticker</a>from
           <a href="https://tenor.com/search/emoji-stickers">Emoji Stickers</a>
         </div>
@@ -149,10 +149,7 @@ export default {
 .tenor-gif-embed {
   width: 200px;
   height: 200px;
-}
-
-.tenor-gif-embed > div {
-  padding-top: 0px;
+  display: inline-block;
 }
 
 @media (max-width: 480px) {
@@ -165,6 +162,7 @@ export default {
   justify-content: center;
   align-items: center;
   align-content: center;
+  text-align: center;
 }
 
 .test-share-content {
